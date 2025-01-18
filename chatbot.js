@@ -10,8 +10,8 @@ const sendMessageButton = document.getElementById("send-message");
 const userInput = document.getElementById("user-input");
 const quickActionButtons = document.querySelectorAll(".quick-action-btn");
 
-        // Size toggle functionality
-        let isExpanded = false;
+// Size toggle functionality
+let isExpanded = false;
 sizeToggle.addEventListener("click", () => {
     isExpanded = !isExpanded;
     chatContainer.classList.toggle("expanded");
@@ -153,8 +153,6 @@ async function sendMessage() {
     fetchResponseFromGPT(message);
 }
 
-
-
 function getCustomResponse(message) {
 // Convert message to lowercase for easier matching
 const lowerMessage = message.toLowerCase();
@@ -177,7 +175,7 @@ const identityResponses = {
 // Check if the message matches any identity questions
 for (const [question, response] of Object.entries(identityResponses)) {
 if (lowerMessage.includes(question)) {
-    return response;
+return response;
 }
 }
 
@@ -194,25 +192,25 @@ try {
 // Check for identity-related questions first
 const customResponse = getCustomResponse(message);
 if (customResponse) {
-    const typingIndicator = document.querySelector(".typing-indicator");
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
-    appendMessage(customResponse, "bot-message");
-    return;
+const typingIndicator = document.querySelector(".typing-indicator");
+if (typingIndicator) {
+typingIndicator.remove();
+}
+appendMessage(customResponse, "bot-message");
+return;
 }
 
 // Proceed with regular API call for non-identity questions
 const response = await fetch('/chatbot', {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ message: message }),
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+},
+body: JSON.stringify({ message: message }),
 });
 
 if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+throw new Error(`HTTP error! status: ${response.status}`);
 }
 
 const data = await response.json();
@@ -220,7 +218,7 @@ const text = data.response;
 
 const typingIndicator = document.querySelector(".typing-indicator");
 if (typingIndicator) {
-    typingIndicator.remove();
+typingIndicator.remove();
 }
 
 appendMessage(text, "bot-message");
@@ -229,19 +227,18 @@ appendMessage(text, "bot-message");
 console.error("Error:", error);
 const typingIndicator = document.querySelector(".typing-indicator");
 if (typingIndicator) {
-    typingIndicator.remove();
+typingIndicator.remove();
 }
 
 appendMessage(
-    `I apologize, but I encountered an error while processing your request. Please try rephrasing your question or use one of the quick action buttons above. If the issue persists, please refresh the page to start a new chat session.`,
-    "bot-message"
+`I apologize, but I encountered an error while processing your request. Please try rephrasing your question or use one of the quick action buttons above. If the issue persists, please refresh the page to start a new chat session.`,
+"bot-message"
 );
 } finally {
 isProcessing = false;
 sendMessageButton.disabled = false;
 }
 }
-
 
 // Add pulse animation to chat button
 function addPulseAnimation() {
